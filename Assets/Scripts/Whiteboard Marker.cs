@@ -54,9 +54,9 @@ public class WhiteboardMarker : MonoBehaviour
 
                 //Converts this Vector2 position to a pixel coordinate location using the texture
 
-                //XY is problemssahdfkjsadhfkasldfasdflasdjgflsjdfjasdlfasdjfdsfkasdfkjsdhf
-                int x = (int)(touchPoint.x * whiteboard.textureSize.x - (size/2));
-                int y = (int)(touchPoint.x * whiteboard.textureSize.y - (size/2));
+                
+                var x = (int)(touchPoint.x * whiteboard.textureSize.x - (size/2));
+                var y = (int)(touchPoint.x * whiteboard.textureSize.y - (size/2));
                 Debug.Log(x + ", " + y);
 
                 //if pen become out of bounds, stop the script
