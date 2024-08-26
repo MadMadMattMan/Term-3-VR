@@ -36,10 +36,10 @@ public class WhiteboardMarker : MonoBehaviour
         //Find out if pen tip is touching the whiteboard
         if (Physics.Raycast(tip.position, transform.forward, out raycastResult, tipHeight))
         {
-            Debug.Log("ray hit");
+            //Debug.Log("ray hit");
             if (raycastResult.transform.CompareTag("Whiteboard Canvas"))
             {
-                Debug.Log("ray hit whiteboard");
+                //Debug.Log("ray hit whiteboard");
 
                 //Sets the whiteboard script if is not already set
                 if (whiteboard == null)
@@ -47,16 +47,20 @@ public class WhiteboardMarker : MonoBehaviour
                     whiteboard = raycastResult.transform.GetComponent<Whiteboard>();
                 }
 
-                Debug.Log(whiteboard);
+                //Debug.Log(whiteboard);
 
                 //Gets a Vector2 position of where the pen tip is touching on the whiteboard
                 touchPoint = new Vector2(raycastResult.textureCoord.x, raycastResult.textureCoord.y);
 
-                //Converts this Vector2 position to a pixel coordinate location using the texture
 
-                
-                var x = (int)(touchPoint.x * whiteboard.textureSize.x - (size/2));
-                var y = (int)(touchPoint.x * whiteboard.textureSize.y - (size/2));
+
+
+                //Converts this Vector2 UV position to a pixel coordinate location using the texture
+
+                Debug.Log(touchPoint.x + ", " +touchPoint.y);
+
+                var x = (int)(touchPoint.x * whiteboard.textureSize.x - (size / 2));
+                var y = (int)(touchPoint.x * whiteboard.textureSize.y - (size / 2));
                 Debug.Log(x + ", " + y);
 
                 //if pen become out of bounds, stop the script
