@@ -8427,8 +8427,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -8461,7 +8461,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd49ff30b780bca40b770c2daec1d314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markerHeld: 0
   tip: {fileID: 2087303835}
   size: 15
   interpolationStepPercent: 20
@@ -10840,7 +10839,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
@@ -10874,7 +10873,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd49ff30b780bca40b770c2daec1d314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markerHeld: 1
   tip: {fileID: 1036277778}
   size: 15
   interpolationStepPercent: 12.5
@@ -12613,8 +12611,8 @@ Transform:
   m_GameObject: {fileID: 1036277777}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 6}
-  m_LocalScale: {x: 0.0175, y: 0.0175, z: 0.0175}
+  m_LocalPosition: {x: 0, y: 0, z: 3}
+  m_LocalScale: {x: 0.045, y: 0.045, z: 0.045}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1018612640}
@@ -24704,9 +24702,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2087303834}
   serializedVersion: 2
-  m_LocalRotation: {x: 6.505213e-19, y: 2.4963092e-35, z: -3.837398e-17, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 6}
-  m_LocalScale: {x: 0.0175, y: 0.0175, z: 0.0175}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 3}
+  m_LocalScale: {x: 0.45, y: 0.45, z: 0.45}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 663127023}
@@ -25617,9 +25615,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2146389970}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 6}
-  m_LocalScale: {x: 0.0175, y: 0.0175, z: 0.0175}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 3}
+  m_LocalScale: {x: 0.45, y: 0.45, z: 0.45}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7100189815437700098}
@@ -25871,8 +25869,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -25888,7 +25886,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd49ff30b780bca40b770c2daec1d314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markerHeld: 0
   tip: {fileID: 2146389971}
   size: 15
   interpolationStepPercent: 20

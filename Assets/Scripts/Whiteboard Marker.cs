@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class WhiteboardMarker : MonoBehaviour
 {
-    public bool markerHeld = false;
     [SerializeField] Transform tip;
     [SerializeField] int size;
     [SerializeField] float interpolationStepPercent;
@@ -19,16 +18,20 @@ public class WhiteboardMarker : MonoBehaviour
 
     bool touchLastFrame;
 
+    Rigidbody rb;
+
 
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
         tipHeight = tip.localScale.y;
         colors = Enumerable.Repeat(penColor, size * size).ToArray();
     }
 
     void Update()
     {
-        if (markerHeld)
+        //As when an object is held in vr, it's rb is set to kinematic. So if pen is held, run drawing method.
+        if (rb.isKinematic)
             Draw();
     }
 
@@ -42,15 +45,11 @@ public class WhiteboardMarker : MonoBehaviour
             //Debug.Log("ray hit");
             if (raycastResult.transform.CompareTag("Whiteboard Canvas"))
             {
-                //Debug.Log("ray hit whiteboard");
+                ///Debug.Log("ray hit whiteboard");
 
                 //Sets the whiteboard script if is not already set
                 if (whiteboard == null)
-                {
                     whiteboard = raycastResult.transform.GetComponent<Whiteboard>();
-                }
-
-                //Debug.Log(whiteboard);
 
                 //Gets a Vector2 position of where the pen tip is touching on the whiteboard
                 touchPoint = new Vector2(raycastResult.textureCoord.x, raycastResult.textureCoord.y);
@@ -60,25 +59,24 @@ public class WhiteboardMarker : MonoBehaviour
 
                 //Converts this Vector2 UV position to a pixel coordinate location using the texture
 
-                //Debug.Log(touchPoint.x + ", " +touchPoint.y);
-                //Debug.Log(whiteboard.textureSize.x + ", " + whiteboard.textureSize.y);
-                //Debug.Log(size);
-
+                ///Debug.Log("Touch points " + touchPoint.x + ", " + touchPoint.y + "; texture size " + whiteboard.textureSize.x + ", " + whiteboard.textureSize.y + "; pen size" + size);
                 var x = (int)(touchPoint.x * whiteboard.textureSize.x - (size / 2));
                 var y = (int)(touchPoint.y * whiteboard.textureSize.y - (size / 2));
-                Debug.Log(x + ", " + y);
+                ///Debug.Log(x + ", " + y);
 
-                //if pen become out of bounds, stop the script
+                //if pen leaves the bounds of the whiteboard, stop the script
                 if (y < 0 || y > whiteboard.textureSize.y || x < 0 || x > whiteboard.textureSize.x)
                     return;
 
 
+
+                //
                 if (touchLastFrame)
                 {
                     //Draw exactly where the pen tip is touching
                     whiteboard.texture.SetPixels(x, y, size, size, colors);
 
-                    //Interpolates the position between frames in case the marker is moving fast
+                    //Interpolates the position between frames so line stays solid and not just dots
                     for (float i = 0.01f; i < 1; i += interpolationStepPercent/100)
                     {
                         //Get the interpolated steps
@@ -89,17 +87,18 @@ public class WhiteboardMarker : MonoBehaviour
                         whiteboard.texture.SetPixels(lerpX, lerpY, size, size, colors);
                     }
 
-                    //Apply the changes
+                    //Apply the changes to the texture
                     whiteboard.texture.Apply();
                 }
 
-
+                //Setup for next frame
                 lastTouchPoint = new Vector2(x, y);
                 touchLastFrame = true;
                 return;
             }
         }
 
+        //If pen is released from the whiteboard, reset
         whiteboard = null;
         touchLastFrame = false;
     }
