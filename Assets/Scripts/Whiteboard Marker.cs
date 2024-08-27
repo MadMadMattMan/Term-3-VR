@@ -6,8 +6,10 @@ using UnityEngine;
 
 public class WhiteboardMarker : MonoBehaviour
 {
+    public bool markerHeld = false;
     [SerializeField] Transform tip;
-    [SerializeField] int size, interpolationStepPercent;
+    [SerializeField] int size;
+    [SerializeField] float interpolationStepPercent;
     [SerializeField] Color penColor;
     Color[] colors;
     float tipHeight;
@@ -26,7 +28,8 @@ public class WhiteboardMarker : MonoBehaviour
 
     void Update()
     {
-        Draw();
+        if (markerHeld)
+            Draw();
     }
 
     void Draw()
@@ -57,10 +60,12 @@ public class WhiteboardMarker : MonoBehaviour
 
                 //Converts this Vector2 UV position to a pixel coordinate location using the texture
 
-                Debug.Log(touchPoint.x + ", " +touchPoint.y);
+                //Debug.Log(touchPoint.x + ", " +touchPoint.y);
+                //Debug.Log(whiteboard.textureSize.x + ", " + whiteboard.textureSize.y);
+                //Debug.Log(size);
 
                 var x = (int)(touchPoint.x * whiteboard.textureSize.x - (size / 2));
-                var y = (int)(touchPoint.x * whiteboard.textureSize.y - (size / 2));
+                var y = (int)(touchPoint.y * whiteboard.textureSize.y - (size / 2));
                 Debug.Log(x + ", " + y);
 
                 //if pen become out of bounds, stop the script
@@ -74,11 +79,11 @@ public class WhiteboardMarker : MonoBehaviour
                     whiteboard.texture.SetPixels(x, y, size, size, colors);
 
                     //Interpolates the position between frames in case the marker is moving fast
-                    for (int i = 0; i < 100; i += interpolationStepPercent)
+                    for (float i = 0.01f; i < 1; i += interpolationStepPercent/100)
                     {
                         //Get the interpolated steps
-                        int lerpX = (int)Mathf.Lerp(lastTouchPoint.x, x, i / 100);
-                        int lerpY = (int)Mathf.Lerp(lastTouchPoint.y, y, i / 100);
+                        int lerpX = (int)Mathf.Lerp(lastTouchPoint.x, x, i);
+                        int lerpY = (int)Mathf.Lerp(lastTouchPoint.y, y, i);
 
                         //Draw an inerpolated dot along the expected pathway
                         whiteboard.texture.SetPixels(lerpX, lerpY, size, size, colors);
