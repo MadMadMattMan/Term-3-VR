@@ -5,37 +5,40 @@ using UnityEngine;
 public class WateringCan : MonoBehaviour
 {
 
-    bool pouring;
+    [SerializeField] bool pouring, tipped;
+    [SerializeField] Vector3 angle;
     Rigidbody rb;
     ParticleSystem ptc;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>(); 
+        rb = GetComponentInParent<Rigidbody>(); 
         ptc = GetComponentInChildren<ParticleSystem>();
     }
 
     void Update()
     {
-        if (Tipping() && rb.isKinematic)
-            PourCan();
-        else if (pouring)
+        tipped = Tipping();
+
+        //If the can is being tipped over and is held by the player, pour the can
+        if (Tipping() && rb.isKinematic && !pouring)
+        {
+            pouring = true;
+            ptc.Play();
+        }
+
+        //If the player lets go of the can or stops tipping it over, stop pouring
+        else if (!Tipping() || !rb.isKinematic)
         {
             ptc.Stop();
             pouring = false;
         }
     }
 
-    void PourCan()
-    {
-        pouring = true;
-        ptc.Play();
-    }
-
     bool Tipping()
     {
-        Debug.Log(transform.localEulerAngles.x);
-        if (transform.localEulerAngles.x >= 140 || transform.localEulerAngles.x <= -55)
+        angle = transform.localEulerAngles;
+        if (transform.localEulerAngles.x <= 355 && transform.localEulerAngles.x > 90)
             return true;
         else
             return false;
