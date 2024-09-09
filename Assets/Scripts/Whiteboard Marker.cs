@@ -70,7 +70,7 @@ public class WhiteboardMarker : MonoBehaviour
 
 
 
-                //
+                //if the pen was touching the whiteboard last frame
                 if (touchLastFrame)
                 {
                     //Draw exactly where the pen tip is touching
