@@ -15,7 +15,7 @@ public class RadialMenu : MonoBehaviour
     [Header("Feature Variables")]
     List<GameObject> spawnedParts = new List<GameObject>();
 
-    int tempOptionCount = -1;
+    //int tempOptionCount = -1;
 
     private void Start()
     {
