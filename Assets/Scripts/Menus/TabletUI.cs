@@ -5,34 +5,34 @@ using UnityEngine.SceneManagement;
 
 public class TabletUI : MonoBehaviour
 {
-    public enum currentActionStates
-    {
-        ResetRoom,
-        QuitGame,
-    }
-    currentActionStates currentAction;
 
     public GameObject ResetButton, QuitButton, YesNoButton, AdvancedButton, SoundSlider, MainMenuText;
+    string currentAction;
 
     private void Start()
     {
         ResetTablet();
     }
 
-    public void AreYouSure(currentActionStates action)
+    public void AreYouSure(string action)
     {
         currentAction = action;
         //Change tablet to are you sure text
-    }
+        MainMenuText.SetActive(false);
+        ResetButton.SetActive(false);
+        QuitButton.SetActive(false);
 
+        YesNoButton.SetActive(true);
+
+    }
 
     public void AYSYes()
     {
-        if (currentAction == currentActionStates.ResetRoom)
+        if (currentAction == "reset")
         {
             ResetRoom();
         }
-        else if (currentAction == currentActionStates.QuitGame)
+        else if (currentAction == "quit")
         {
             Application.Quit();
         }
@@ -40,11 +40,11 @@ public class TabletUI : MonoBehaviour
 
     public void AYSNo()
     {
-        if (currentAction == currentActionStates.ResetRoom)
+        if (currentAction == "reset")
         {
             ResetTablet();
         }
-        else if (currentAction == currentActionStates.QuitGame)
+        else if (currentAction == "quit")
         {
             Application.Quit();
         }
@@ -61,9 +61,7 @@ public class TabletUI : MonoBehaviour
         MainMenuText.SetActive(true);
         ResetButton.SetActive(true);
         QuitButton.SetActive(true);
-        //AdvancedButton.SetActive(true);
 
         YesNoButton.SetActive(false);
-        //SoundSlider.SetActive(false);
     }
 }
