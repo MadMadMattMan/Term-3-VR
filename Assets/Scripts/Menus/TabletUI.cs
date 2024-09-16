@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class TabletUI : MonoBehaviour
 {
 
-    public GameObject ResetButton, QuitButton, YesNoButton, AdvancedButton, SoundSlider, MainMenuText;
+    public GameObject ResetButton, QuitButton, YesNoButton, MainMenuText;
     string currentAction;
 
     private void Start()
