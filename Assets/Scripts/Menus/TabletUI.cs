@@ -60,8 +60,13 @@ public class TabletUI : MonoBehaviour
     {
         MainMenuText.SetActive(true);
         ResetButton.SetActive(true);
-        QuitButton.SetActive(true);
+        //QuitButton.SetActive(true);
 
         YesNoButton.SetActive(false);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

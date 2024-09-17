@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Whiteboard : MonoBehaviour
 {
-    public Texture2D texture;
+    public Texture2D texture = null;
     public Vector2 textureSize;
 
     public Material mat;
@@ -17,8 +17,9 @@ public class Whiteboard : MonoBehaviour
     {
         Renderer renderer = GetComponent<Renderer>();
 
+        if (texture == null)
+            texture = new Texture2D((int)textureSize.x, (int)textureSize.y);
 
-        texture = new Texture2D((int)textureSize.x, (int)textureSize.y);
         renderer.material.mainTexture = texture;
 
         mat = new Material(renderer.material);
