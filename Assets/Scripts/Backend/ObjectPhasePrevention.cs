@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ObjectPhasePrevention : MonoBehaviour
 {
+    [SerializeField] bool nonImportant;
     Vector3 startPos;
     Quaternion startRot;
 
@@ -25,6 +26,12 @@ public class ObjectPhasePrevention : MonoBehaviour
             transform.position = startPos;
             transform.rotation = startRot;
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        startPos = new Vector3(transform.position.x, 0.1f, transform.position.z);
+        startRot = transform.rotation;
     }
 
 }
