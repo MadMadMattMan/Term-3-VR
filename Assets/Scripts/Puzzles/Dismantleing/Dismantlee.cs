@@ -8,6 +8,7 @@ public class Dismantlee : MonoBehaviour
 {
     [SerializeField] List<Tool> workTool;
     [SerializeField] string type;
+    [SerializeField] LockedByDismantlee lockedObj;
     public bool dismantleing = false;
     GameObject GrabComponent;
     float step = 0.055f;
@@ -34,6 +35,8 @@ public class Dismantlee : MonoBehaviour
 
     void Drop()
     {
+        //Tells the locked object that dismantlee was released
+        lockedObj.AnchorUnlocked(gameObject);
         //Makes the Dismantlee act using gravity
         GetComponent<Rigidbody>().isKinematic = false;
         //Gets the hand grab child of Dismantlee and enables it so it can be grabbed
