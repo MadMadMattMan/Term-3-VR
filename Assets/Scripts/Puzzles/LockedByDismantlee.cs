@@ -6,23 +6,27 @@ using UnityEngine;
 public class LockedByDismantlee : MonoBehaviour
 {
     [SerializeField] List<GameObject> anchors;
-    [SerializeField] bool locked;
+    [SerializeField] bool locked = true;
+    [SerializeField] GameObject hammer;
     Rigidbody rb;
-    Grabbable handGrab;
-    GrabFreeTransformer grabRestriction;
+    //Grabbable handGrab;
+    //GrabFreeTransformer grabRestriction;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        handGrab = GetComponentInChildren<Grabbable>();
-        grabRestriction = GetComponent<GrabFreeTransformer>();
+        rb = GetComponentInChildren<Rigidbody>();
+        //handGrab = GetComponentInChildren<Grabbable>();
+        //grabRestriction = GetComponent<GrabFreeTransformer>();
     }
 
     void UnlockObject()
     {
-        rb.isKinematic = false;
-        handGrab.InjectOptionalOneGrabTransformer(grabRestriction);
-        handGrab.InjectOptionalTwoGrabTransformer(grabRestriction);
+        StartCoroutine(OpenScrewDraw());
+        locked = false;
+
+        //rb.isKinematic = false;
+        //handGrab.InjectOptionalOneGrabTransformer(grabRestriction);
+        //handGrab.InjectOptionalTwoGrabTransformer(grabRestriction);
     }
 
     public void AnchorUnlocked(GameObject dismantlee)
@@ -32,6 +36,26 @@ public class LockedByDismantlee : MonoBehaviour
         if (anchors.Count <= 0)
         {
             UnlockObject();
+        }
+    }
+
+    [SerializeField] float step = 5f;
+    [SerializeField] float rot = 15f;
+    [SerializeField] float distance = 0.19f;
+    [SerializeField] float time = 0.5f;
+
+    //Runs the open draw animation
+    IEnumerator OpenScrewDraw()
+    {
+        hammer.SetActive(true);
+
+        //Debug.Log("Started OpenDraw");
+        for (int i = 0; i < step; i++)
+        {
+            //Debug.Log(distance + " " + step + " " + time);
+            transform.eulerAngles += new Vector3(rot / step, 0, 0);
+            transform.localPosition += new Vector3(0, 0, distance / step);
+            yield return new WaitForSeconds(time / step);
         }
     }
 }

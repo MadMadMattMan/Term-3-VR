@@ -13,9 +13,5 @@ public class KeypadVRCode : MonoBehaviour
     {
         button.ReleaseButton();
     }
-    public int RandomCode()
-    {
-        return Random.RandomRange(1000, 9999);
-    }
     
 }

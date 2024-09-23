@@ -12,7 +12,7 @@ namespace NavKeypad
         [SerializeField] private UnityEvent onAccessGranted;
         [SerializeField] private UnityEvent onAccessDenied;
         [Header("Combination Code (9 Numbers Max)")]
-        public int keypadCombo = 12345;
+        public string keypadCombo = "12345";
 
         public UnityEvent OnAccessGranted => onAccessGranted;
         public UnityEvent OnAccessDenied => onAccessDenied;
@@ -22,6 +22,7 @@ namespace NavKeypad
         [SerializeField] private string accessDeniedText = "Denied";
 
         [SerializeField] KeypadVRCode myCode;
+        [SerializeField] Clock clock;
 
         [Header("Visuals")]
         [SerializeField] private float displayResultTime = 1f;
@@ -49,7 +50,7 @@ namespace NavKeypad
         {
             ClearInput();
             panelMesh.material.SetVector("_EmissionColor", screenNormalColor * screenIntensity);
-            keypadCombo = myCode.RandomCode();
+            keypadCombo = clock.keypadCode;
         }
 
 
@@ -64,7 +65,7 @@ namespace NavKeypad
                     CheckCombo();
                     break;
                 default:
-                    if (currentInput != null && currentInput.Length == 4) // 9 max passcode size 
+                    if (currentInput != null && currentInput.Length == 4) // 4 max passcode size 
                     {
                         CheckCombo();
                         return;
@@ -77,13 +78,10 @@ namespace NavKeypad
         }
         public void CheckCombo()
         {
-            if (int.TryParse(currentInput, out var currentKombo))
+            bool granted = currentInput == keypadCombo;
+            if (!displayingResult)
             {
-                bool granted = currentKombo == keypadCombo;
-                if (!displayingResult)
-                {
-                    StartCoroutine(DisplayResultRoutine(granted));
-                }
+                StartCoroutine(DisplayResultRoutine(granted));
             }
             else
             {
