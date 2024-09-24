@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Clock : MonoBehaviour
@@ -7,9 +8,14 @@ public class Clock : MonoBehaviour
     [SerializeField] Transform hourHand, minuteHand, secondHand;
     public string keypadCode;
     int hour, minute, second;
+    AudioSource clockSound;
+    [SerializeField] AudioClip[] ticks;
+    [SerializeField] TextMeshPro digitalClock;
 
     private void Start()
     {
+        clockSound = GetComponent<AudioSource>();
+
         //Generate a random code
         hour = Random.Range(1, 12);
         string h = hour.ToString();
@@ -30,6 +36,7 @@ public class Clock : MonoBehaviour
         }
 
         keypadCode = h + m;
+        digitalClock.text = h + ":" + m + " am";
 
         //Finding positions on clock
         float hHand = (hour / 12f) * 360f;
@@ -48,9 +55,29 @@ public class Clock : MonoBehaviour
 
     //Smoothly shifts second hand one space and then
     int step = 10;
+    bool breakTick;
     IEnumerator SecondAnimation()
     {
-        yield return new WaitForSeconds(0.9f);
+        yield return new WaitForSeconds(0.85f);
+
+        //Get a random tick sound and play it
+        if (!breakTick)
+        {
+            clockSound.clip = ticks[0];
+            clockSound.volume -= 0.2f;
+            breakTick = true;
+        }
+        else
+        {
+            int tick = Random.Range(0, ticks.Length-1);
+            clockSound.clip = ticks[tick+1];
+            clockSound.volume += 0.2f;
+            breakTick = false;
+        }
+        clockSound.Play();
+
+        yield return new WaitForSeconds(0.05f);
+
         //Smooth sift of the hand of 2degrees over 0.05seconds foreward one second
         for (int i = 0; i < step; i++) 
         {
