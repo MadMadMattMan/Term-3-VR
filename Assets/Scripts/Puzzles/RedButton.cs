@@ -9,6 +9,6 @@ public class RedButton : MonoBehaviour
 
     private void Start()
     {
-        button.SetActive(false);
+        //button.SetActive(false);
     }
 }
