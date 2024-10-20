@@ -5,14 +5,22 @@ using UnityEngine;
 
 public class LockScript : MonoBehaviour
 {
+    [Header("Lock")]
     [SerializeField] Grabbable grabComponent;
     [SerializeField] GrabFreeTransformer unlockedTransformer;
 
+    [Header("Box")]
+    [SerializeField] Animator boxLid;
+
     public void Unlock()
     {
+        //when unlocked, start physics and make lock grab and moveable freely
         GetComponent<Rigidbody>().isKinematic = false;
 
         grabComponent.InjectOptionalOneGrabTransformer(unlockedTransformer);
         grabComponent.InjectOptionalTwoGrabTransformer(unlockedTransformer);
+
+        //Shift lid to make clear
+        boxLid.SetBool("Open", true);
     }
 }

@@ -12,12 +12,14 @@ public class ObjectPhasePrevention : MonoBehaviour
 
     private void Start()
     {
+        //sets origin transform
         startPos = transform.position;
         startRot = transform.rotation;
     }
 
     private void Update()
     {
+        //If object below world, reset position
         if (transform.position.y < minY)
         {
             GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -30,8 +32,11 @@ public class ObjectPhasePrevention : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        startPos = new Vector3(transform.position.x, 0.1f, transform.position.z);
-        startRot = transform.rotation;
+        //If not important, set transfrom to collide position to respawn above where phase happened
+        if (nonImportant)
+        {
+            startPos = new Vector3(transform.position.x, 0.15f, transform.position.z);
+            startRot = transform.rotation;
+        }
     }
-
 }
