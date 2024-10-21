@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Whiteboard : MonoBehaviour
 {
+    //Drawing on whiteboard in WhiteboardMarker script
     public Texture2D texture = null;
     public Vector2 textureSize;
 
@@ -15,6 +16,7 @@ public class Whiteboard : MonoBehaviour
 
     private void Start()
     {
+        //Set up script, creates a new texture image and mat for the
         Renderer renderer = GetComponent<Renderer>();
 
         if (texture == null)
@@ -27,6 +29,7 @@ public class Whiteboard : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        //Saves the whiteboard state to drive after exit, may be expanded later
         if (drawn)
         {
             byte[] savedImage = texture.EncodeToPNG();

@@ -5,14 +5,14 @@ using UnityEngine;
 public class BreakableObject : MonoBehaviour
 {
     [Header("Settings")]
-    [Tooltip("speed required to break")]   [SerializeField] float breakSpeed;
-    [Tooltip("% of energy conserved")]     [SerializeField] float smashPercent = 0.4f;
-    [Tooltip("is this object stationary")] [SerializeField] bool stationary;
+    [Tooltip("speed required to break")]   [SerializeField] float breakSpeed = 2f;
+    [Tooltip("% of energy conserved")]     [SerializeField] float smashPercent = 0.2f;
+    [Tooltip("is this object stationary")] [SerializeField] bool stationary = false;
 
     [Header("References")]
     [SerializeField] GameObject startObject;
 
-    [SerializeField] GameObject brokenObject, stationaryTool;
+    [SerializeField] GameObject brokenObject, stationaryTool, stationaryParent;
     [SerializeField] Rigidbody[] brokenRbs = new Rigidbody[0];
 
     [Header("Private")]
@@ -93,10 +93,15 @@ public class BreakableObject : MonoBehaviour
         else if (speed >= breakSpeed && stationary && collision.gameObject.name == stationaryTool.name)
         {
             SmashObject();
+            if (gameObject.name == "Red Button Glass")
+            {
+                stationaryParent.GetComponent<RedButton>().EnableButton();
+                Debug.Log("Enabled Button");
+            }
         }
     }
 
-    void SmashObject()
+    public void SmashObject()
     {
         brokenSpeed = speed;
         //Ininital values

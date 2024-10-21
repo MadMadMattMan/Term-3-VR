@@ -23,6 +23,7 @@ public class WhiteboardMarker : MonoBehaviour
 
     void Start()
     {
+        //Setup the variables
         whiteboard = GameObject.FindWithTag("Whiteboard Canvas").GetComponent<Whiteboard>();
 
         if (rb == null)
