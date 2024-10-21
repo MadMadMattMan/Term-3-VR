@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Whiteboard Canvas
   - Lock
+  - Break Tool
   layers:
   - Default
   - TransparentFX

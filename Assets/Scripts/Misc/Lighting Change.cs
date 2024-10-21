@@ -19,12 +19,14 @@ public class LightingChange : MonoBehaviour
 
     private void Start()
     {
+        //Sets up the scene so UV light and sound is disabled
         isUV = false;
         mainLight = GetComponent<Light>();
 
         UVbuzz = GetComponentInChildren<AudioSource>();
         UVbuzz.Stop();
 
+        //Makes the text invisable, set aphla (transparentcy) to 0
         for (int i = 0; i < UVTexts.Length; i++)
         {
             UVTexts[i].alpha = 0f;
@@ -38,6 +40,7 @@ public class LightingChange : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Debugging tests
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ToggleUV();
@@ -52,6 +55,7 @@ public class LightingChange : MonoBehaviour
 
     public void ToggleUV()
     {
+        //Toggles the light and sound between UV mode and regular mode
         if (mainLight.color == Default)
         {
             mainLight.color = UV;
@@ -63,6 +67,8 @@ public class LightingChange : MonoBehaviour
             mainLight.color = Default;
             isUV = false;
             UVbuzz.Stop();
+
+            //Makes the UV text visable
             for (int i = 0; i < UVTexts.Length; i++)
             {
                 UVTexts[i].alpha = 0;
@@ -74,13 +80,19 @@ public class LightingChange : MonoBehaviour
             }
         }
     }
+
+    [Header("UV settings")]
     [SerializeField] float strength, range, rate;
     void UVPulse()
     {
+        //Pulses light based on a triangle wave function 
         if (mainLight.intensity < 1f || mainLight.intensity > 1 + range)
             rate = -rate;
+        //Sets the light intensity
         strength += rate;
         mainLight.intensity = strength + 1;
+
+        //Pulses transparency of the text with the light for effect
         for (int i = 0; i < UVTexts.Length; i++)
         {
             UVTexts[i].alpha = 0.35f + 3*strength;

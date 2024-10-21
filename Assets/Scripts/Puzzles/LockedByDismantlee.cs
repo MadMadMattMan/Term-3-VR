@@ -21,6 +21,7 @@ public class LockedByDismantlee : MonoBehaviour
 
     void UnlockObject()
     {
+        //When the object is unlocked
         StartCoroutine(OpenScrewDraw());
         locked = false;
 
@@ -33,6 +34,7 @@ public class LockedByDismantlee : MonoBehaviour
     {
         anchors.Remove(dismantlee);
 
+        //If there are no anchors (screws) holding the object closed
         if (anchors.Count <= 0)
         {
             UnlockObject();
@@ -44,15 +46,17 @@ public class LockedByDismantlee : MonoBehaviour
     [SerializeField] float distance = 0.19f;
     [SerializeField] float time = 0.5f;
 
-    //Runs the open draw animation
+    //The opening draw animation 
     IEnumerator OpenScrewDraw()
     {
+        //Enables hammer for use
         hammer.SetActive(true);
 
-        //Debug.Log("Started OpenDraw");
+        //Physically animates the opening of the draw with code
+        ///Debug.Log("Started OpenDraw");
         for (int i = 0; i < step; i++)
         {
-            //Debug.Log(distance + " " + step + " " + time);
+            ///Debug.Log(distance + " " + step + " " + time);
             transform.eulerAngles += new Vector3(rot / step, 0, 0);
             transform.localPosition += new Vector3(0, 0, distance / step);
             yield return new WaitForSeconds(time / step);

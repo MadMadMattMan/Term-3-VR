@@ -12,45 +12,75 @@ public class BreakableObject : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject startObject;
 
-    [SerializeField] GameObject brokenObject;
+    [SerializeField] GameObject brokenObject, stationaryTool;
     [SerializeField] Rigidbody[] brokenRbs = new Rigidbody[0];
 
     [Header("Private")]
-    Rigidbody mainObjRb;
+    Rigidbody mainObjRb, toolObjRb;
     [SerializeField] float speed;
     [SerializeField] float brokenSpeed;
     Vector3 pastPos;
     Vector3 collisionNormal = Vector3.zero;
 
 
-    private void Start()
+    void Start()
     {
         startObject.SetActive(true);
         brokenObject.SetActive(false);
 
         mainObjRb = GetComponent<Rigidbody>();
+        if (stationary)
+            toolObjRb = stationaryTool.GetComponent<Rigidbody>();
     }
 
-    private void Update()
+    void Update()
     {
         if (mainObjRb != null && !stationary)
         {
             if (mainObjRb.isKinematic)
             {
+                //Calculate velocity if the object isn't moving through physics rigidbody (ie is kinematic)
                 //v = d/t
                 speed = Mathf.Abs((transform.position - pastPos).magnitude) / Time.deltaTime;
                 pastPos = transform.position;
             }
             else
             {
+                //Get velocity if using physics rigidbody
                 speed = mainObjRb.velocity.magnitude;
             }
         }
+        else if (startObject != null)
+        {
+            //Get velocity of tool if the smashing object is staionary
+            if (!toolObjRb.isKinematic)
+            {
+                //Calculate velocity if the object isn't moving through physics rigidbody (ie is kinematic)
+                //v = d/t
+                speed = Mathf.Abs((stationaryTool.transform.position - pastPos).magnitude) / Time.deltaTime;
+                pastPos = stationaryTool.transform.position;
+
+                ///Debug.Log("Speed via calc: " + speed + "  " + pastPos);
+            }
+            else
+            {
+                //Get velocity if using physics rigidbody
+                speed = toolObjRb.velocity.magnitude;
+
+                ///Debug.Log("Speed via physics");
+            }
+        }
+        else
+        {
+            //Debugging error message
+            Debug.LogError("Invalid breakable object settings");
+        }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log("Crash speed " + mainObjRb.velocity.magnitude);
+        //Debug Test
+        ///Debug.Log("Detected breakable collision with " + collision.gameObject.name);
 
         //If the object has a speed above the break value
         if (speed >= breakSpeed && !stationary)
@@ -59,9 +89,10 @@ public class BreakableObject : MonoBehaviour
             collisionNormal = collision.contacts[0].normal.normalized;
             SmashObject();
         }
-        else if (speed >= breakSpeed)
+        //else if the breaking tool has a large enough speed
+        else if (speed >= breakSpeed && stationary && collision.gameObject.name == stationaryTool.name)
         {
-            SmashObjectStationary();
+            SmashObject();
         }
     }
 
@@ -71,12 +102,13 @@ public class BreakableObject : MonoBehaviour
         //Ininital values
         Vector3 relativePos = startObject.transform.position;
 
-        //Breaking
+        //Hide whole object and show broken object
         startObject.SetActive(false);
-        mainObjRb.isKinematic = true; //Disable main object falling
-
-
         brokenObject.SetActive(true);
+
+        //Physics adjustments if not stationary
+        if (!stationary)
+            mainObjRb.isKinematic = true; //Disable main object falling
 
         //Final values
         float fSpeed = speed * smashPercent;
@@ -90,14 +122,10 @@ public class BreakableObject : MonoBehaviour
             float dz = brokenRbs[i].gameObject.transform.position.z - relativePos.z;
             Vector3 smashDir = new Vector3(dx, dy, dz).normalized;
 
-            smashDir += collisionNormal; //Adjusts the direction to have a bit of bounce
+            smashDir += collisionNormal * 1.5f; //Adjusts the direction to have a bit of overall bounce with collision
 
-            //Scale the vector by the final speed calculation
+            //Scale the vector by the final speed calculation and apply as velocity
             brokenRbs[i].velocity = smashDir * fSpeed;
         }
-    }
-    void SmashObjectStationary()
-    {
-
     }
 }

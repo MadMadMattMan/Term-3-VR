@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 namespace NavKeypad
 {
+    //Grabbed from Unity Asset Store - adjusted
     public class Keypad : MonoBehaviour
     {
         [Header("Events")]
@@ -29,9 +30,9 @@ namespace NavKeypad
         [Range(0, 5)]
         [SerializeField] private float screenIntensity = 2.5f;
         [Header("Colors")]
-        [SerializeField] private Color screenNormalColor = new Color(0.98f, 0.50f, 0.032f, 1f); //orangy
-        [SerializeField] private Color screenDeniedColor = new Color(1f, 0f, 0f, 1f); //red
-        [SerializeField] private Color screenGrantedColor = new Color(0f, 0.62f, 0.07f); //greenish
+        [SerializeField] private Color screenNormalColor = new Color(0.98f, 0.50f, 0.032f, 1f);
+        [SerializeField] private Color screenDeniedColor = new Color(1f, 0f, 0f, 1f);
+        [SerializeField] private Color screenGrantedColor = new Color(0f, 0.62f, 0.07f); 
         [Header("SoundFx")]
         [SerializeField] private AudioClip buttonClickedSfx;
         [SerializeField] private AudioClip accessDeniedSfx;
@@ -54,28 +55,38 @@ namespace NavKeypad
         }
 
 
-        //Gets value from pressedbutton
+        //Edited the input function - it gets value from pressedbutton
         public void AddInput(string input)
         {
+            //Play the sound effect
             audioSource.PlayOneShot(buttonClickedSfx);
+            //Check if already unlocked or displaying a result, if so stop the function
             if (displayingResult || accessWasGranted) return;
+
+            //get the input and check it agaist some cases
             switch (input)
             {
+                //if input is enter, check the current combo
                 case "enter":
                     CheckCombo();
                     break;
+
+                //if the case is anything else
                 default:
+                    //If the input is a over 4 inputs long and not null check the current combo and break function
                     if (currentInput != null && currentInput.Length == 4) // 4 max passcode size 
                     {
                         CheckCombo();
                         return;
                     }
+                    //if not add the input to the current input and display it
                     currentInput += input;
                     keypadDisplayText.text = currentInput;
                     break;
             }
 
         }
+
         public void CheckCombo()
         {
             bool granted = currentInput == keypadCombo;
@@ -90,7 +101,6 @@ namespace NavKeypad
 
         }
 
-        //mainly for animations 
         private IEnumerator DisplayResultRoutine(bool granted)
         {
             displayingResult = true;
