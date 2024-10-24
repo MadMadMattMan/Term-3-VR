@@ -7,18 +7,27 @@ public class Key : MonoBehaviour
 {
     [SerializeField] GameObject lockObj;
     [SerializeField] Transform snapPos;
-    [SerializeField] GrabFreeTransformer lockedConstraint;
+    [SerializeField] GrabFreeTransformer keyContrainTransformer;
+    [SerializeField] TransformerUtils.RotationConstraints lockRotationalConstraints = new TransformerUtils.RotationConstraints()
+    {
+        XAxis = new TransformerUtils.ConstrainedAxis(),
+        YAxis = new TransformerUtils.ConstrainedAxis(),
+        ZAxis = new TransformerUtils.ConstrainedAxis()
+    };
 
+    [Header("Dev Tools")]
+    [SerializeField] bool turnBypass = false;
     Grabbable handGrab;
     Collider thisCollider;
     Rigidbody rb;
+
     bool inLock = false;
 
     private void Start()
     {
         //Setup
         thisCollider = GetComponentInChildren<MeshCollider>();
-        handGrab = GetComponent<Grabbable>();
+        handGrab = GetComponentInChildren<Grabbable>();
         rb = GetComponent<Rigidbody>();
     }
 
@@ -41,40 +50,46 @@ public class Key : MonoBehaviour
         //Snaps key into lock
         transform.parent = snapPos;
         transform.localPosition = Vector3.zero;
-        transform.rotation = Quaternion.Euler(new Vector3(270, 180, 270));
+        transform.localRotation = Quaternion.Euler(new Vector3(180, 270, 90));
 
         //Makes the key fully attach to the lock, prevent key from respawing if lock faces into ground
         Destroy(GetComponent<ObjectPhasePrevention>());
 
-        //Cause constained grab
-        handGrab.InjectOptionalOneGrabTransformer(lockedConstraint);
-        handGrab.InjectOptionalTwoGrabTransformer(lockedConstraint);
+        //Cause constained grab by replacing the rotation constraints
+        keyContrainTransformer.InjectOptionalRotationConstraints(lockRotationalConstraints);
 
         //Bool update
         inLock = true;
+
+        //Temp fix
+        if (turnBypass)
+            lockObj.GetComponentInParent<LockScript>().Unlock();
     }
 
-    private void Update()
+    void Update()
     {
         //If the key is in the lock, check for the rotation of the key and if the key has been turned
         if (inLock)
         {
-            rb.isKinematic = true;
             transform.localPosition = Vector3.zero;
 
             Debug.Log(transform.localEulerAngles);
 
             //If in the lock and turned, unlock the lock
-            if (transform.localRotation.eulerAngles.y > 295f)
+            if (transform.localRotation.eulerAngles.y > 300f)
             {
                 lockObj.GetComponentInParent<LockScript>().Unlock();
+                rb.freezeRotation = true;
+                Destroy(handGrab.gameObject);
             }
         }
+
+
         if (rb.isKinematic && !inLock)
         {
             float dist = Vector3.Distance(transform.position, lockObj.transform.position);
-
-            if (dist < 0.05f)
+            ///Debug.Log($"Distance = {dist}");
+            if (dist < 0.1f)
             {
                 LockFunction();
             }

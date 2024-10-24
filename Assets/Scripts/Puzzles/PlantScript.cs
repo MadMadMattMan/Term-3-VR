@@ -14,6 +14,9 @@ public class PlantScript : MonoBehaviour
     [Header("Key")]
     [SerializeField] GameObject key;
 
+    [Header("Dev Tools")]
+    [SerializeField] bool pourBypass;
+
 
 
     void LateUpdate()
@@ -22,7 +25,8 @@ public class PlantScript : MonoBehaviour
         if (growing && tf.localScale.x < 0.0007f)
         {
             tf.localScale += growVector();
-            //growing = false;
+            if (!pourBypass)
+                growing = false;
         }
         //else if the first frame after size is bigger than max size set state to grown
         else if (growing && tf.localScale.x >= 0.0007f && !grown)

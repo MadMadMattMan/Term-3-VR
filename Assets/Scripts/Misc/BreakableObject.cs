@@ -21,6 +21,7 @@ public class BreakableObject : MonoBehaviour
     [SerializeField] float brokenSpeed;
     Vector3 pastPos;
     Vector3 collisionNormal = Vector3.zero;
+    bool broken = false;
 
 
     void Start()
@@ -35,45 +36,48 @@ public class BreakableObject : MonoBehaviour
 
     void Update()
     {
-        if (mainObjRb != null && !stationary)
+        if (!broken)
         {
-            if (mainObjRb.isKinematic)
+            if (mainObjRb != null && !stationary)
             {
-                //Calculate velocity if the object isn't moving through physics rigidbody (ie is kinematic)
-                //v = d/t
-                speed = Mathf.Abs((transform.position - pastPos).magnitude) / Time.deltaTime;
-                pastPos = transform.position;
+                if (mainObjRb.isKinematic)
+                {
+                    //Calculate velocity if the object isn't moving through physics rigidbody (ie is kinematic)
+                    //v = d/t
+                    speed = Mathf.Abs((transform.position - pastPos).magnitude) / Time.deltaTime;
+                    pastPos = transform.position;
+                }
+                else
+                {
+                    //Get velocity if using physics rigidbody
+                    speed = mainObjRb.velocity.magnitude;
+                }
+            }
+            else if (startObject != null && stationary)
+            {
+                //Get velocity of tool if the smashing object is staionary
+                if (!toolObjRb.isKinematic)
+                {
+                    //Calculate velocity if the object isn't moving through physics rigidbody (ie is kinematic)
+                    //v = d/t
+                    speed = Mathf.Abs((stationaryTool.transform.position - pastPos).magnitude) / Time.deltaTime;
+                    pastPos = stationaryTool.transform.position;
+
+                    ///Debug.Log("Speed via calc: " + speed + "  " + pastPos);
+                }
+                else
+                {
+                    //Get velocity if using physics rigidbody
+                    speed = toolObjRb.velocity.magnitude;
+
+                    ///Debug.Log("Speed via physics");
+                }
             }
             else
             {
-                //Get velocity if using physics rigidbody
-                speed = mainObjRb.velocity.magnitude;
+                //Debugging error message
+                Debug.LogError("Invalid breakable object settings");
             }
-        }
-        else if (startObject != null)
-        {
-            //Get velocity of tool if the smashing object is staionary
-            if (!toolObjRb.isKinematic)
-            {
-                //Calculate velocity if the object isn't moving through physics rigidbody (ie is kinematic)
-                //v = d/t
-                speed = Mathf.Abs((stationaryTool.transform.position - pastPos).magnitude) / Time.deltaTime;
-                pastPos = stationaryTool.transform.position;
-
-                ///Debug.Log("Speed via calc: " + speed + "  " + pastPos);
-            }
-            else
-            {
-                //Get velocity if using physics rigidbody
-                speed = toolObjRb.velocity.magnitude;
-
-                ///Debug.Log("Speed via physics");
-            }
-        }
-        else
-        {
-            //Debugging error message
-            Debug.LogError("Invalid breakable object settings");
         }
     }
 
@@ -103,6 +107,7 @@ public class BreakableObject : MonoBehaviour
 
     public void SmashObject()
     {
+        broken = true;
         brokenSpeed = speed;
         //Ininital values
         Vector3 relativePos = startObject.transform.position;
