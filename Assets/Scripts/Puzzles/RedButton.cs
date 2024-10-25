@@ -7,6 +7,7 @@ public class RedButton : MonoBehaviour
 {
     PokeInteractable buttonInteractor;
     LightingChange UVLight;
+    BreakableObject glass;
 
     private void Start()
     {
@@ -16,6 +17,6 @@ public class RedButton : MonoBehaviour
 
     public void EnableButton()
     {
-        buttonInteractor.MaxInteractors = -1;
+        buttonInteractor.MaxInteractors = 1;
     }
 }

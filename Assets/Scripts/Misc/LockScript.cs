@@ -11,6 +11,7 @@ public class LockScript : MonoBehaviour
 
     [Header("Box")]
     [SerializeField] Animator boxLid;
+    [SerializeField] GameObject screwdriver;
 
     public void Unlock()
     {
@@ -22,5 +23,6 @@ public class LockScript : MonoBehaviour
 
         //Shift lid to make clear
         boxLid.SetBool("Open", true);
+        screwdriver.SetActive(true);
     }
 }

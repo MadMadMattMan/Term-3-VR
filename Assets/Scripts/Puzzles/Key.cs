@@ -73,7 +73,7 @@ public class Key : MonoBehaviour
         {
             transform.localPosition = Vector3.zero;
 
-            Debug.Log(transform.localEulerAngles);
+            ///Debug.Log(transform.localEulerAngles);
 
             //If in the lock and turned, unlock the lock
             if (transform.localRotation.eulerAngles.y > 300f)
