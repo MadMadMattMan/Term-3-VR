@@ -38,6 +38,7 @@ public class BreakableObject : MonoBehaviour
     {
         if (!broken)
         {
+            //Sets speed of a moving breakable
             if (mainObjRb != null && !stationary)
             {
                 if (mainObjRb.isKinematic)
@@ -53,10 +54,11 @@ public class BreakableObject : MonoBehaviour
                     speed = mainObjRb.velocity.magnitude;
                 }
             }
+            //Sets speed of a tool for a stationary breakable
             else if (startObject != null && stationary)
             {
                 //Get velocity of tool if the smashing object is staionary
-                if (!toolObjRb.isKinematic)
+                if (toolObjRb.isKinematic)
                 {
                     //Calculate velocity if the object isn't moving through physics rigidbody (ie is kinematic)
                     //v = d/t
@@ -85,24 +87,24 @@ public class BreakableObject : MonoBehaviour
     {
         //Debug Test
         ///Debug.Log("Detected breakable collision with " + collision.gameObject.name);
-
-        //If the object has a speed above the break value
-        if (speed >= breakSpeed && !stationary)
-        {
-            //Find the normal directon of the contact point object and set collisionNormal, then start Smash()
-            collisionNormal = collision.contacts[0].normal.normalized;
-            SmashObject();
-        }
-        //else if the breaking tool has a large enough speed
-        else if (speed >= breakSpeed && stationary && collision.gameObject.name == stationaryTool.name)
-        {
-            SmashObject();
-            if (gameObject.name == "Red Button Glass")
+            //If the object has a speed above the break value
+            if (speed >= breakSpeed && !stationary)
             {
-                stationaryParent.GetComponent<RedButton>().EnableButton();
-                Debug.Log("Enabled Button");
+                //Find the normal directon of the contact point object and set collisionNormal, then start Smash()
+                collisionNormal = collision.contacts[0].normal.normalized;
+                SmashObject();
             }
-        }
+
+            //else if the breaking tool has a large enough speed
+            else if (speed >= breakSpeed && stationary && collision.gameObject.name == stationaryTool.name)
+            {
+                SmashObject();
+                if (gameObject.name == "Red Button Glass")
+                {
+                    stationaryParent.GetComponent<RedButton>().EnableButton();
+                    Debug.Log("Enabled Button");
+                }
+            }
     }
 
     public void SmashObject()

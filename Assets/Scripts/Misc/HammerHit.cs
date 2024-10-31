@@ -16,7 +16,7 @@ public class HammerHit : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         //Get Color
-        ParticleSystem.startColor = Color.black;
+        //ParticleSystem.startColor = Color.black;
         ParticleSystem.Play();
         AudioSource.Play();
     }

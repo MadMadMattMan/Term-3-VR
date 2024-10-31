@@ -21,7 +21,7 @@ public class Key : MonoBehaviour
     Collider thisCollider;
     Rigidbody rb;
 
-    bool inLock = false;
+    bool inLock, unlocked;
 
     private void Start()
     {
@@ -76,14 +76,14 @@ public class Key : MonoBehaviour
             ///Debug.Log(transform.localEulerAngles);
 
             //If in the lock and turned, unlock the lock
-            if (transform.localRotation.eulerAngles.y > 300f)
+            if (transform.localRotation.eulerAngles.y > 300f && !unlocked)
             {
                 lockObj.GetComponentInParent<LockScript>().Unlock();
                 rb.freezeRotation = true;
+                unlocked = true;
                 Destroy(handGrab.gameObject);
             }
         }
-
 
         if (rb.isKinematic && !inLock)
         {

@@ -8,11 +8,11 @@ public class LightingChange : MonoBehaviour
 {
     [SerializeField] Color Default = new Color(255, 237, 186);
     [SerializeField] Color UV = new Color(100, 83, 148);
+    public Color winGreen = new Color(15, 255, 15);
     [SerializeField] Color fluroYellow = new Color(80, 100, 0);
     Color fluroYellowOff = new Color(80, 100, 0, 0);
     [SerializeField] Color fluroGreen = new Color(121, 254, 12);
     Light mainLight;
-    bool isUV = false;
     AudioSource UVbuzz;
     [SerializeField] TextMeshPro[] UVTexts = new TextMeshPro[0];
     [SerializeField] Image[] whiteboardImages;
@@ -20,7 +20,6 @@ public class LightingChange : MonoBehaviour
     private void Start()
     {
         //Sets up the scene so UV light and sound is disabled
-        isUV = false;
         mainLight = GetComponent<Light>();
 
         UVbuzz = GetComponentInChildren<AudioSource>();
@@ -38,34 +37,17 @@ public class LightingChange : MonoBehaviour
         
     }
 
-    private void FixedUpdate()
-    {
-        //Debugging tests
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ToggleUV();
-        }
-        if (isUV)
-        {
-            UVPulse();
-            
-        }
-    }
-
-
     public void ToggleUV()
     {
         //Toggles the light and sound between UV mode and regular mode
         if (mainLight.color == Default)
         {
             mainLight.color = UV;
-            isUV = true;
             UVbuzz.Play();
         }
         else
         {
             mainLight.color = Default;
-            isUV = false;
             UVbuzz.Stop();
 
             //Makes the UV text visable
@@ -79,6 +61,11 @@ public class LightingChange : MonoBehaviour
                 whiteboardImages[i].color = fluroYellowOff;
             }
         }
+    }
+
+    public void WinLight()
+    {
+        mainLight.color = winGreen;
     }
 
     [Header("UV settings")]

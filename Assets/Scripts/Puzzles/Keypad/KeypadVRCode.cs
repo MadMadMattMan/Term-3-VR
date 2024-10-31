@@ -13,5 +13,11 @@ public class KeypadVRCode : MonoBehaviour
     {
         button.ReleaseButton();
     }
-    
+
+    [SerializeField] LightingChange lightChange;
+
+    public void Win()
+    {
+        lightChange.WinLight();
+    }
 }

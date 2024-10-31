@@ -6,7 +6,6 @@ using UnityEngine;
 public class LockedByDismantlee : MonoBehaviour
 {
     [SerializeField] List<GameObject> anchors;
-    [SerializeField] bool locked = true;
     [SerializeField] GameObject hammer;
     Rigidbody rb;
     //Grabbable handGrab;
@@ -23,7 +22,6 @@ public class LockedByDismantlee : MonoBehaviour
     {
         //When the object is unlocked
         StartCoroutine(OpenScrewDraw());
-        locked = false;
 
         //rb.isKinematic = false;
         //handGrab.InjectOptionalOneGrabTransformer(grabRestriction);

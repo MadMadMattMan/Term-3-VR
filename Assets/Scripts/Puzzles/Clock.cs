@@ -1,3 +1,4 @@
+using NavKeypad;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,6 +7,7 @@ using UnityEngine;
 public class Clock : MonoBehaviour
 {
     [SerializeField] Transform hourHand, minuteHand, secondHand;
+    [SerializeField] Keypad keypad;
     public string keypadCode;
     int hour, minute, second;
     AudioSource clockSound;
@@ -48,6 +50,8 @@ public class Clock : MonoBehaviour
 
         float sHand = (second / 60f) * 360f;
         secondHand.eulerAngles = new Vector3(0, 0, sHand);
+
+        keypad.keypadCombo = keypadCode;
 
         //Starts first animation for seconds hand
         StartCoroutine(SecondAnimation());

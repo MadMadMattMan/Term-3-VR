@@ -23,7 +23,6 @@ namespace NavKeypad
         [SerializeField] private string accessDeniedText = "Denied";
 
         [SerializeField] KeypadVRCode myCode;
-        [SerializeField] Clock clock;
 
         [Header("Visuals")]
         [SerializeField] private float displayResultTime = 1f;
@@ -51,7 +50,6 @@ namespace NavKeypad
         {
             ClearInput();
             panelMesh.material.SetVector("_EmissionColor", screenNormalColor * screenIntensity);
-            keypadCombo = clock.keypadCode;
         }
 
 
@@ -93,10 +91,11 @@ namespace NavKeypad
             if (!displayingResult)
             {
                 StartCoroutine(DisplayResultRoutine(granted));
+                
             }
             else
             {
-                Debug.LogWarning("Couldn't process input for some reason..");
+                Debug.LogWarning("Couldn't process input.");
             }
 
         }

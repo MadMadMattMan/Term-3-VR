@@ -17,6 +17,6 @@ public class RedButton : MonoBehaviour
 
     public void EnableButton()
     {
-        buttonInteractor.MaxInteractors = 1;
+        buttonInteractor.MaxInteractors = -1;
     }
 }
