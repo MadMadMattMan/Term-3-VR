@@ -8,6 +8,7 @@ TagManager:
   - Lock
   - Break Tool
   - Hands
+  - SmashSolid
   layers:
   - Default
   - TransparentFX

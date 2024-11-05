@@ -65,6 +65,11 @@ public class TabletUI : MonoBehaviour
         YesNoButton.SetActive(false);
     }
 
+    public void ExitGame()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     public void QuitGame()
     {
         Application.Quit();

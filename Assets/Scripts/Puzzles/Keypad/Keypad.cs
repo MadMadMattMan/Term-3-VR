@@ -87,12 +87,16 @@ namespace NavKeypad
 
         public void CheckCombo()
         {
-            bool granted = currentInput == keypadCombo;
+            bool granted = false;
+            if (currentInput == keypadCombo)
+            {
+                myCode.Win();
+                granted = true;
+            }
+
             if (!displayingResult)
             {
-                StartCoroutine(DisplayResultRoutine(granted));
-                
-            }
+                StartCoroutine(DisplayResultRoutine(granted));            }
             else
             {
                 Debug.LogWarning("Couldn't process input.");

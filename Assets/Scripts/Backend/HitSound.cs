@@ -9,14 +9,24 @@ public class HitSound : MonoBehaviour
 
     private void Start()
     {
-        hitSource = Instantiate(new AudioSource());
-        hitSource.playOnAwake = false;
-        hitSource.clip = hitClip;
-        hitSource.volume = 0.8f;
+        try
+        {
+            hitSource = GetComponent<AudioSource>();
+            hitSource.playOnAwake = false;
+            hitSource.clip = hitClip;
+            hitSource.volume = 0.8f;
+        }
+        catch
+        {
+            Debug.LogWarning("No Audio for object");
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        hitSource.Play();
+        if (hitSource != null)
+        {
+            hitSource.Play();
+        }
     }
 }

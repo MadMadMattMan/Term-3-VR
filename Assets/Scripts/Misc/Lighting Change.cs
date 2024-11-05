@@ -34,7 +34,6 @@ public class LightingChange : MonoBehaviour
         {
             whiteboardImages[i].color = fluroYellowOff;
         }
-        
     }
 
     public void ToggleUV()
@@ -44,6 +43,17 @@ public class LightingChange : MonoBehaviour
         {
             mainLight.color = UV;
             UVbuzz.Play();
+
+            //Makes the UV text visable
+            for (int i = 0; i < UVTexts.Length; i++)
+            {
+                UVTexts[i].alpha = 180;
+
+            }
+            for (int i = 0; i < whiteboardImages.Length; i++)
+            {
+                whiteboardImages[i].color = fluroYellow;
+            }
         }
         else
         {
@@ -60,6 +70,14 @@ public class LightingChange : MonoBehaviour
             {
                 whiteboardImages[i].color = fluroYellowOff;
             }
+        }
+    }
+
+    private void Update()
+    {
+        if (mainLight.color == UV)
+        {
+            UVPulse();
         }
     }
 

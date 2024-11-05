@@ -24,5 +24,8 @@ public class LockScript : MonoBehaviour
         //Shift lid to make clear
         boxLid.SetBool("Open", true);
         screwdriver.SetActive(true);
+
+        //Sound for progression
+        GameObject.Find("Event Sound").GetComponent<AudioSource>().Play();
     }
 }

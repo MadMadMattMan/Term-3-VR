@@ -15,9 +15,12 @@ public class KeypadVRCode : MonoBehaviour
     }
 
     [SerializeField] LightingChange lightChange;
+    [SerializeField] GameObject winButtons;
 
     public void Win()
     {
         lightChange.WinLight();
+        GetComponent<AudioSource>().Play();
+        winButtons.SetActive(true);
     }
 }

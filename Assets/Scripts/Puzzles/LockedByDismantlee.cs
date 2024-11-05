@@ -50,6 +50,9 @@ public class LockedByDismantlee : MonoBehaviour
         //Enables hammer for use
         hammer.SetActive(true);
 
+        //Plays win sound
+        GameObject.Find("Event Sound").GetComponent<AudioSource>().Play();
+
         //Physically animates the opening of the draw with code
         ///Debug.Log("Started OpenDraw");
         for (int i = 0; i < step; i++)

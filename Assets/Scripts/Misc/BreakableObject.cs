@@ -1,3 +1,4 @@
+using Oculus.Interaction;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,10 +8,10 @@ public class BreakableObject : MonoBehaviour
     [Header("Settings")]
     [Tooltip("speed required to break")]   [SerializeField] float breakSpeed = 2f;
     [Tooltip("% of energy conserved")]     [SerializeField] float smashPercent = 0.2f;
-    [Tooltip("is this object stationary")] [SerializeField] bool stationary = false;
+    [Tooltip("is this object stationary")] public bool stationary = false;
 
     [Header("References")]
-    [SerializeField] GameObject startObject;
+    [SerializeField] GameObject startObject, handGrab;
 
     [SerializeField] GameObject brokenObject, stationaryTool, stationaryParent;
     [SerializeField] Rigidbody[] brokenRbs = new Rigidbody[0];
@@ -19,6 +20,7 @@ public class BreakableObject : MonoBehaviour
     Rigidbody mainObjRb, toolObjRb;
     [SerializeField] float speed;
     [SerializeField] float brokenSpeed;
+
     Vector3 pastPos;
     Vector3 collisionNormal = Vector3.zero;
     bool broken = false;
@@ -30,6 +32,7 @@ public class BreakableObject : MonoBehaviour
         brokenObject.SetActive(false);
 
         mainObjRb = GetComponent<Rigidbody>();
+
         if (stationary)
             toolObjRb = stationaryTool.GetComponent<Rigidbody>();
     }
@@ -88,22 +91,14 @@ public class BreakableObject : MonoBehaviour
         //Debug Test
         ///Debug.Log("Detected breakable collision with " + collision.gameObject.name);
             //If the object has a speed above the break value
-            if (speed >= breakSpeed && !stationary)
+            if (speed >= breakSpeed && !stationary && collision.gameObject.tag == "SmashSolid")
             {
                 //Find the normal directon of the contact point object and set collisionNormal, then start Smash()
                 collisionNormal = collision.contacts[0].normal.normalized;
                 SmashObject();
-            }
-
-            //else if the breaking tool has a large enough speed
-            else if (speed >= breakSpeed && stationary && collision.gameObject.name == stationaryTool.name)
-            {
-                SmashObject();
-                if (gameObject.name == "Red Button Glass")
-                {
-                    stationaryParent.GetComponent<RedButton>().EnableButton();
-                    Debug.Log("Enabled Button");
-                }
+                //Make non grabable
+                Destroy(handGrab.GetComponent<Grabbable>());
+                gameObject.GetComponent<Rigidbody>().isKinematic = true;
             }
     }
 
@@ -138,6 +133,24 @@ public class BreakableObject : MonoBehaviour
 
             //Scale the vector by the final speed calculation and apply as velocity
             brokenRbs[i].velocity = smashDir * fSpeed;
+        }
+    }
+
+    public void SmashCheck()
+    {
+        if (stationary)
+        {
+            SmashObject();
+            if (gameObject.name == "Red Button Glass")
+            {
+                stationaryParent.GetComponent<RedButton>().EnableButton();
+                GameObject.Find("Event Sound").GetComponent<AudioSource>().Play();
+                Debug.Log("Enabled Button");
+            }
+        }
+        else
+        {
+            SmashObject();
         }
     }
 }

@@ -6,7 +6,7 @@ public class BGMusic : MonoBehaviour
 {
     [SerializeField] AudioClip[] musicClips;
     [SerializeField] AudioSource player;
-    int clipNum = 0;
+    int clipNum = 1;
     float time = 0f, fadeTime = 5f;
     bool fadeMusic = false;
     float maxVolume = 0.015f;

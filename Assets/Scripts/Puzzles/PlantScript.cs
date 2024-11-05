@@ -51,6 +51,7 @@ public class PlantScript : MonoBehaviour
     void TreeGrowingFinished()
     {
         key.SetActive(true);
+        GameObject.Find("Event Sound").GetComponent<AudioSource>().Play();
     }
 
 }
